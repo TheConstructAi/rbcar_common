@@ -20,6 +20,9 @@
 	<xacro:include filename="$(find robotnik_sensors)/urdf/all_sensors.urdf.xacro" />
   <xacro:include filename="$(find robotnik_sensors)/urdf/utils/inertia.urdf.xacro" />
 
+  <!-- Common Parameters and macros -->
+  <xacro:include filename="$(find rbcar_description)/urdf/common/materials.xacro" />
+
 	<!-- ***************** -->
 	<!-- Global parameters -->
 	<!-- ***************** -->

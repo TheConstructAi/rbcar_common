@@ -32,7 +32,7 @@
       <inertial>
         <mass value="1" />
         <origin xyz="0 0 0" />
-        <solid_cuboid_inertia m="1" h="0.1" d="0.1" w="0.1"/>
+        <xacro:solid_cuboid_inertia m="1" h="0.1" d="0.1" w="0.1"/>
       </inertial>
     </link>
   
@@ -56,7 +56,7 @@
       <inertial>
         <mass value="0.1" />
         <origin xyz="0 0 -0.27" />
-        <solid_cuboid_inertia m="0.1" h="0.1" d="0.1" w="0.1"/>
+        <xacro:solid_cuboid_inertia m="0.1" h="0.1" d="0.1" w="0.1"/>
       </inertial>
     </link>
     <transmission name="${prefix}elevator_trans">

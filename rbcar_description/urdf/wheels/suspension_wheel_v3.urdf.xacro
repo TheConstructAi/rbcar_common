@@ -122,7 +122,7 @@
   </xacro:macro>
 
   <!-- The "wheel" macro defines an axle carrier, axle, and wheel. -->
-  <xacro:macro name="wheel" params="lr_prefix fr_prefix lr_reflect">
+  <xacro:macro name="wheel" params="lr_prefix fr_prefix lr_reflect ackerman_debug:=0">
 
     <link name="${lr_prefix}_${fr_prefix}_axle_carrier">
 	  <!-- visual>
@@ -155,8 +155,8 @@
     <transmission name="${lr_prefix}_${fr_prefix}_axle_trans">
       <type>transmission_interface/SimpleTransmission</type>
       <joint name="${lr_prefix}_${fr_prefix}_axle">
-        <!-- hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface -->
-        <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <!-- <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface> -->
       </joint>
       <actuator name="${lr_prefix}_${fr_prefix}_axle_act">
         <mechanicalReduction>1</mechanicalReduction>
@@ -206,6 +206,28 @@
     <gazebo reference="${lr_prefix}_${fr_prefix}_wheel">
       <material>Gazebo/Black</material>
     </gazebo>
+
+    <!-- Visualization Ackerman -->
+    <xacro:if value="${ackerman_debug == 1}"> <!-- this applies if we are setting the left wheel -->
+      <link name="${lr_prefix}_${fr_prefix}_wheel_axis">
+        <visual>
+          <origin xyz="0 0 0" rpy = "0 0 0"/>
+          
+          <geometry>
+            <cylinder radius="0.05" length="10.0"/>
+          </geometry>
+          <material name="tire_mat"/>
+        </visual>      
+      </link>
+
+      <joint name="${lr_prefix}_${fr_prefix}_ackerman_joint" type="fixed">
+        <parent link="${lr_prefix}_${fr_prefix}_wheel"/>
+        <child link="${lr_prefix}_${fr_prefix}_wheel_axis"/>      
+      </joint>
+    </xacro:if>
+    
+
+
   </xacro:macro>
 
 
@@ -250,8 +272,8 @@
     <transmission name="${lr_prefix}_steering_trans">
       <type>transmission_interface/SimpleTransmission</type>
       <joint name="${lr_prefix}_steering_joint">
-        <!--<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>-->
-        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <!-- <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface> -->
       </joint>
       <actuator name="${lr_prefix}_steering_act">
         <mechanicalReduction>1</mechanicalReduction>

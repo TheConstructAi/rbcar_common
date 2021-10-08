@@ -1,0 +1,62 @@
+# .yaml config file
+#
+# The PID gains and controller settings must be saved in a yaml file that gets loaded
+# to the param server via the roslaunch file (garbagecollector_control.launch).
+
+rbcar:
+  # Publish all joint states -----------------------------------
+  # Creates the /joint_states topic necessary in ROS
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 50  
+
+  # Velocity Effort Controllers ---------------------------------------
+  right_rear_axle_velocity_controller:
+    type: effort_controllers/JointVelocityController
+    joint: right_rear_axle
+    pid: {p: 100.0, i: 0.0, d: 1.0}
+
+  left_rear_axle_velocity_controller:
+    type: effort_controllers/JointVelocityController
+    joint: left_rear_axle
+    pid: {p: 100.0, i: 0.0, d: 1.0}
+  
+  right_front_axle_velocity_controller:
+    type: effort_controllers/JointVelocityController
+    joint: right_front_axle
+    pid: {p: 100.0, i: 0.0, d: 1.0}
+
+  left_front_axle_velocity_controller:
+    type: effort_controllers/JointVelocityController
+    joint: left_front_axle
+    pid: {p: 100.0, i: 0.0, d: 1.0}
+
+  # Position Effort Controllers ---------------------------------------
+  right_steering_joint_position_controller:
+    type: effort_controllers/JointPositionController
+    joint: right_steering_joint
+    pid: {p: 100.0, i: 0.0, d: 1.0}
+
+  left_steering_joint_position_controller:
+    type: effort_controllers/JointPositionController
+    joint: left_steering_joint
+    pid: {p: 100.0, i: 0.0, d: 1.0}
+
+  elevator_joint_position_controller:
+    type: effort_controllers/JointPositionController
+    joint: elevator_joint
+    pid: {p: 1000.0, i: 0.0, d: 1000.0}
+
+  front_ptz_camera_tilt_joint_position_controller:
+    type: effort_controllers/JointPositionController
+    joint: front_ptz_camera_tilt_joint
+    pid: {p: 1000.0, i: 0.0, d: 1000.0}
+
+  front_ptz_camera_pan_joint_position_controller:
+    type: effort_controllers/JointPositionController
+    joint: front_ptz_camera_pan_joint
+    pid: {p: 1000.0, i: 0.0, d: 1000.0}
+    
+    
+    
+    

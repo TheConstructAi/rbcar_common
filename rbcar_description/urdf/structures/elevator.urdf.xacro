@@ -42,7 +42,7 @@
       <origin xyz="0.0 0.0 ${length}" rpy="0 0 0" />
       <child link="${prefix}elevator_link"/>
       <axis xyz="0 0 1"/>
-      <limit lower="0.0" upper="${spread}" effort="100.0" velocity="0.07"/>
+      <limit lower="0.0" upper="${spread}" effort="1000.0" velocity="0.07"/>
       <!--<xacro:insert_block name="origin" />-->
     </joint>
   
@@ -61,12 +61,14 @@
     </link>
     <transmission name="${prefix}elevator_trans">
       <type>transmission_interface/SimpleTransmission</type>
-      <joint name="${prefix}elevator_joint">
-        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <joint name="${prefix}elevator_joint">      
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <!-- <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface> -->
       </joint>
       <actuator name="${prefix}elevator_motor">
         <mechanicalReduction>1</mechanicalReduction>
-        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <!-- <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface> -->
       </actuator>
     </transmission>
   </xacro:macro>

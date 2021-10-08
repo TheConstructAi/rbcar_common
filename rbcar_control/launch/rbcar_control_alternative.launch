@@ -1,0 +1,40 @@
+<launch>
+	
+	<rosparam file="$(find rbcar_control)/config/rbcar_control_alternative.yaml"
+            command="load"/>
+	
+
+	<node name="robot_state_publisher_box_car" pkg="robot_state_publisher" type="robot_state_publisher"
+        respawn="false" output="screen">
+            <param name="publish_frequency" type="double" value="10.0" />            
+            <remap from="/joint_states" to="/rbcar/joint_states" />
+        </node>
+
+	<node 	name="controller_spawner" 
+			pkg="controller_manager" 
+			type="spawner" 
+			respawn="false"
+			output="screen"
+			args="--namespace=/rbcar 
+							joint_state_controller 
+							right_rear_axle_velocity_controller
+							left_rear_axle_velocity_controller
+							right_front_axle_velocity_controller
+							left_front_axle_velocity_controller
+							right_steering_joint_position_controller
+							left_steering_joint_position_controller
+							elevator_joint_position_controller
+							front_ptz_camera_tilt_joint_position_controller
+							front_ptz_camera_pan_joint_position_controller
+							--shutdown-timeout 3">
+	</node>
+
+	<node 	name="ackerman_control_node" 
+			pkg="rbcar_control" 
+			type="ackerman_control.py" 
+			respawn="false"
+			output="screen"
+			args="">
+	</node>
+
+</launch>

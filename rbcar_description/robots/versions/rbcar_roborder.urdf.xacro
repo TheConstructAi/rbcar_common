@@ -78,9 +78,9 @@
 
 	<!-- SENSORS -->
 
-  <xacro:elevator parent="base_link" fixed_elevator="false">
+  <!-- <xacro:elevator parent="base_link" fixed_elevator="false">
 		<origin xyz="0.0 0.0 0.6" rpy="0 0 0"/>
-	</xacro:elevator>
+	</xacro:elevator> -->
 
   <xacro:sensor_imu_hector prefix="imu" parent="base_link">
 		<origin xyz="0.0 0.0 0.170" rpy="0 0 0"/>
@@ -116,9 +116,9 @@
   </xacro:sensor_hokuyo_utm30lx>
 
   <!-- Adding Sensors for navigation - and autonomous driving . Custom vvalues due to instability of version 16-->
-  <xacro:sensor_rslidar prefix="rslidar" parent="elevator_link" prefix_topic="rslidar" range_min="0.2" range_max="50.0" hfov="360.0" hres="0.4" vfov="30.0" vres="0.8" fps="2.0" gpu="true">
+  <!-- <xacro:sensor_rslidar prefix="rslidar" parent="elevator_link" prefix_topic="rslidar" range_min="0.2" range_max="50.0" hfov="360.0" hres="0.4" vfov="30.0" vres="0.8" fps="2.0" gpu="true">
     <origin xyz="0 0 0" rpy="0 0 0"/>
-  </xacro:sensor_rslidar>
+  </xacro:sensor_rslidar> -->
 
   <xacro:sensor_mpc3_bosch prefix="ueye_rgb_camera" parent="base_link">
       <origin xyz="1.32236 0.013835 1.48042" rpy="0 0 0"/>

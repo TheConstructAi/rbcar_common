@@ -12,7 +12,10 @@
 	<xacro:include filename="$(find rbcar_description)/urdf/bases/rbcar_base.urdf.xacro" />
 
 	<!-- Import Robotnik CAR wheels -->
-	<xacro:include filename="$(find rbcar_description)/urdf/wheels/suspension_wheel_v3.urdf.xacro" />
+	<!-- <xacro:include filename="$(find rbcar_description)/urdf/wheels/suspension_wheel_v3.urdf.xacro" /> -->
+  <xacro:include filename="$(find rbcar_description)/urdf/common/macros.xacro" />
+  <xacro:include filename="$(find rbcar_description)/urdf/wheels/wheels.xacro" />
+  
 	
 	<xacro:include filename="$(find rbcar_description)/urdf/structures/elevator.urdf.xacro" />
 
@@ -37,13 +40,16 @@
 	<!-- Flag to select the high or low quality model -->
 	<xacro:property name="hq" value="true" />
 
+  <!-- Argument for Setting the Wheel Ackerman visual help Is set as argument in the Wheels.xacro, so take that into account-->
+  
+
 	<!-- *************** -->
 	<!-- Robots Elements -->
 	<!-- *************** -->
 
 	<!-- Here we create the robot elements using the xacro:macros imported at the beggining of this file -->
 
-	<!-- Summit XL base -->
+	<!-- RB CAR BASE -->
 	<xacro:rbcar_base name="roborder" publish_bf="true" hq="${hq}" />
 
 	<!-- Gazebo ros control pluggins -->
@@ -57,18 +63,22 @@
 	<!-- WHEELS -->
 
   <!-- Wheels -->
-  <xacro:front_wheel lr_prefix="left" fr_prefix="front"
+
+
+
+  
+  <!-- <xacro:front_wheel lr_prefix="left" fr_prefix="front"
                      lr_reflect="1" fr_reflect="1" parent="base_link" />
   <xacro:front_wheel lr_prefix="right" fr_prefix="front"
                      lr_reflect="-1" fr_reflect="1" parent="base_link" />
   <xacro:rear_wheel lr_prefix="left" fr_prefix="rear"
                     lr_reflect="1" fr_reflect="-1" parent="base_link" />
   <xacro:rear_wheel lr_prefix="right" fr_prefix="rear"
-                    lr_reflect="-1" fr_reflect="-1" parent="base_link" />   
+                    lr_reflect="-1" fr_reflect="-1" parent="base_link" />    -->
 
 	<!-- SENSORS -->
 
-  <xacro:elevator parent="base_link">
+  <xacro:elevator parent="base_link" fixed_elevator="false">
 		<origin xyz="0.0 0.0 0.6" rpy="0 0 0"/>
 	</xacro:elevator>
 
@@ -77,11 +87,11 @@
 	</xacro:sensor_imu_hector>
 
 	<xacro:sensor_gps prefix="gps" parent="base_link" gps_latitude="$(arg gps_latitude)" gps_longitude="$(arg gps_longitude)" update_rate="20" >
-		<origin xyz="0.0 0 1.5" rpy="0 0 0"/>
+		<origin xyz="0.0 0 0.0" rpy="0 0 0"/>
 	</xacro:sensor_gps>
 
-
-  <xacro:sensor_benewake_ce30d prefix="front_ss_lidar" parent="base_link" prefix_topic='front_ss_lidar' gpu="false">
+  <!-- The Solid State Lydars in Four directions Front , Rear, Left and Right-->
+  <!-- <xacro:sensor_benewake_ce30d prefix="front_ss_lidar" parent="base_link" prefix_topic='front_ss_lidar' gpu="false">
       <origin xyz="2.155 0.0 0.236" rpy="0 0 0"/>
   </xacro:sensor_benewake_ce30d>
 
@@ -90,24 +100,29 @@
   </xacro:sensor_benewake_ce30d>
 
   <xacro:sensor_benewake_ce30d prefix="left_ss_lidar" parent="base_link" prefix_topic='left_ss_lidar' gpu="false">
-      <origin xyz="1.0 -0.8 0.236" rpy="0 0 -1.52"/>
+      <origin xyz="1.0 -0.7 0.236" rpy="0 0 -1.52"/>
   </xacro:sensor_benewake_ce30d>
 
   <xacro:sensor_benewake_ce30d prefix="right_ss_lidar" parent="base_link" prefix_topic='right_ss_lidar' gpu="false">
-      <origin xyz="1.0 0.8 0.236" rpy="0 0 1.52"/>
-  </xacro:sensor_benewake_ce30d>
+      <origin xyz="1.0 0.7 0.236" rpy="0 0 1.52"/>
+  </xacro:sensor_benewake_ce30d> -->
 
-  <xacro:sensor_axis_q8641 prefix="front_ptz_camera" parent="elevator_link" far="300" near="0.08">
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-  </xacro:sensor_axis_q8641>
+  <!-- <xacro:sensor_axis_q8641 prefix="front_ptz_camera" parent="base_link" far="300" near="0.08">
+    <origin xyz="0 0 2.0" rpy="0 0 0"/>
+  </xacro:sensor_axis_q8641> -->
+
+  <xacro:sensor_hokuyo_utm30lx prefix="hokuyo_front_laser" parent="base_link" prefix_topic='hokuyo_front_laser' gpu="false" min_angle="-1.57" max_angle="1.57">
+      <origin xyz="2.22193 0.0 0.055082" rpy="0 0 0"/>
+  </xacro:sensor_hokuyo_utm30lx>
 
   <!-- Adding Sensors for navigation - and autonomous driving . Custom vvalues due to instability of version 16-->
-  <!-- <xacro:sensor_rslidar prefix="rslidar" parent="elevator_link" prefix_topic="rslidar" range_min="0.2" range_max="150.0" hfov="360.0" hres="0.1" vfov="30.0" vres="0.2" fps="2.0" gpu="true">
+  <!-- <xacro:sensor_rslidar prefix="rslidar" parent="elevator_link" prefix_topic="rslidar" range_min="0.2" range_max="50.0" hfov="360.0" hres="0.4" vfov="30.0" vres="0.8" fps="2.0" gpu="true">
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </xacro:sensor_rslidar> -->
 
-  
-
+  <xacro:sensor_mpc3_bosch prefix="ueye_rgb_camera" parent="base_link">
+      <origin xyz="1.32236 0.013835 1.48042" rpy="0 0 0"/>
+  </xacro:sensor_mpc3_bosch>
 
 
 <gazebo>

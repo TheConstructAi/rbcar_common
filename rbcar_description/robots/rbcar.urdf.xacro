@@ -35,6 +35,7 @@
 	<xacro:arg name="gps_longitude" default="39.5091874"/>
 	<xacro:arg name="gps_latitude" default="-0.4637371"/>
 
+
 	<!-- *************** -->
 	<!-- Robots Elements -->
 	<!-- *************** -->

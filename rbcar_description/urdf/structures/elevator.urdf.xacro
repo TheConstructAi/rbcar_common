@@ -9,7 +9,7 @@
   <xacro:property name="outer_radius" value="0.07" />
   <xacro:property name="inner_radius" value="0.05" />
 
-  <xacro:macro name="elevator" params="prefix:='' parent *origin">
+  <xacro:macro name="elevator" params="prefix:='' parent *origin fixed_elevator:=true">
     <xacro:macro name="solid_cuboid_inertia" params="m h d w">
       <inertia ixx="${(m*(h*h+d*d))/12}" ixy = "0" ixz = "0" iyy="${(m*(w*w+d*d))/12}" iyz = "0" izz="${(m*(w*w+h*h))/12}" />
     </xacro:macro>
@@ -28,6 +28,13 @@
             <cylinder radius="${outer_radius}" length="${length}"/>
         </geometry>
       </visual>
+
+      <collision>
+        <origin xyz="0 0 ${length/2.0}" rpy="0 0 0" />
+        <geometry>
+            <cylinder radius="${outer_radius}" length="${length}"/>
+        </geometry>
+      </collision>
   
       <inertial>
         <mass value="1" />
@@ -35,17 +42,7 @@
         <xacro:solid_cuboid_inertia m="1" h="0.1" d="0.1" w="0.1"/>
       </inertial>
     </link>
-  
-    <!-- Elevator structure -->
-    <joint name="${prefix}elevator_joint" type="prismatic">
-      <parent link="${prefix}elevator_base_link"/>
-      <origin xyz="0.0 0.0 ${length}" rpy="0 0 0" />
-      <child link="${prefix}elevator_link"/>
-      <axis xyz="0 0 1"/>
-      <limit lower="0.0" upper="${spread}" effort="1000.0" velocity="0.07"/>
-      <!--<xacro:insert_block name="origin" />-->
-    </joint>
-  
+
     <link name="${prefix}elevator_link">
       <visual>
         <origin xyz="0 0 -${length/2.0}" rpy="0 0 0" />
@@ -53,23 +50,50 @@
             <cylinder radius="${inner_radius}" length="${length}"/>
         </geometry>
       </visual>
+      <collision>
+        <origin xyz="0 0 -${length/2.0}" rpy="0 0 0" />
+        <geometry>
+            <cylinder radius="${inner_radius}" length="${length}"/>
+        </geometry>
+      </collision>
       <inertial>
         <mass value="0.1" />
         <origin xyz="0 0 -0.27" />
         <xacro:solid_cuboid_inertia m="0.1" h="0.1" d="0.1" w="0.1"/>
       </inertial>
     </link>
-    <transmission name="${prefix}elevator_trans">
+  
+    <!-- Elevator structure Fixed by default because unstable due to Gazebo Physiscs-->
+    <xacro:if value="${fixed_elevator}">
+      <joint name="${prefix}elevator_joint" type="fixed">
+        <parent link="${prefix}elevator_base_link"/>
+        <origin xyz="0.0 0.0 ${length + 0.3}" rpy="0 0 0" />
+        <child link="${prefix}elevator_link"/>
+      </joint>
+    </xacro:if>
+    <xacro:unless value="${fixed_elevator}">
+      <joint name="${prefix}elevator_joint" type="prismatic">
+        <parent link="${prefix}elevator_base_link"/>
+        <origin xyz="0.0 0.0 ${length}" rpy="0 0 0" />
+        <child link="${prefix}elevator_link"/>
+        <axis xyz="0 0 1"/>
+        <limit lower="0.3" upper="${spread}" effort="10000.0" velocity="0.01"/> 
+        <joint_properties damping="1.0" friction="10.0"/>
+      </joint>
+
+      <transmission name="${prefix}elevator_trans">
       <type>transmission_interface/SimpleTransmission</type>
       <joint name="${prefix}elevator_joint">      
         <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-        <!-- <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface> -->
       </joint>
       <actuator name="${prefix}elevator_motor">
         <mechanicalReduction>1</mechanicalReduction>
         <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-        <!-- <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface> -->
       </actuator>
     </transmission>
+
+    </xacro:unless>     
+    
+    
   </xacro:macro>
 </robot>

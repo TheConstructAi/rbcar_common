@@ -4,12 +4,15 @@
   <!-- GPS default position of Robotnik at Fuente del Jarro-->
   <arg name="gps_latitude" default="39.5080331"/>
   <arg name="gps_longitude" default="-0.4619816"/>
+  <!--- To activate Visual help for ackerman visualization : 1 ACTIVE, 0 DEACTIVATED-->
+  <arg name="ackerman_debug_active" default="0"/>
+  
 
   <arg name="robot_xacro" default="$(optenv ROBOT_XACRO versions/rbcar_roborder.urdf.xacro)"/>
   <arg name="robot_xacro_path" default="$(find rbcar_description)/robots/$(arg robot_xacro)" />
  
-  <param name="robot_description" command="$(find xacro)/xacro --inorder $(arg robot_xacro_path) gps_latitude:='$(arg gps_latitude)' gps_longitude:='$(arg gps_longitude)'" />
-  <param name="/roborder/robot_description" command="$(find xacro)/xacro --inorder $(arg robot_xacro_path) gps_latitude:='$(arg gps_latitude)' gps_longitude:='$(arg gps_longitude)'" />
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(arg robot_xacro_path) gps_latitude:='$(arg gps_latitude)' gps_longitude:='$(arg gps_longitude)' ackerman_debug_active:='$(arg ackerman_debug_active)'" />
+  <param name="/roborder/robot_description" command="$(find xacro)/xacro --inorder $(arg robot_xacro_path) gps_latitude:='$(arg gps_latitude)' gps_longitude:='$(arg gps_longitude)' ackerman_debug_active:='$(arg ackerman_debug_active)'" />
   <!-- Combine joint values -->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
   

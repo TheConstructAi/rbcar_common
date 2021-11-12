@@ -42,6 +42,7 @@ class cmdvel2gazebo:
         self.R_Min_baselink = R_Min_interior + (self.T / 2.0)
         # radius of inside tire is rMax, so radius of the ideal middle tire (R_MIN) is rMax+treadwidth/2
         # self.rMin = R_MIN+(self.T/2.0)
+        rospy.logwarn("################ MINIMUM TURNING RADIUS ACKERMAN==="+str(self.R_Min_baselink))
 
         self._check_cmd_vel_ready()
 
